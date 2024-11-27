@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  starrocks:
+    image: starrocks/allin1-ubuntu
+    container_name: quickstart
+    ports:
+      - "9030:9030"  # FE query port
+      - "8030:8030"  # FE HTTP port
+      - "8040:8040"  # BE port
+    stdin_open: true
+    tty: true
+    volumes:
+      # Optional: Persist data if needed
+      - starrocks_data:/opt/starrocks/data
+
+    # Optional: Health check to ensure the container is running correctly
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-P", "9030"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Optional: Add a MySQL client service for easier connection
+  mysql-client:
+    image: mysql:8.0
+    container_name: starrocks-client
+    depends_on:
+      - starrocks
+    command: >
+      bash -c "
+        apt-get update && 
+        apt-get install -y mysql-client && 
+        echo 'Waiting for StarRocks to be ready...' && 
+        sleep 20 && 
+        mysql -h starrocks -P 9030 -u root
+      "
+    stdin_open: true
+    tty: true
+
+volumes:
+  starrocks_data:
+
+# Optional network configuration if needed
+networks:
+  default:
+    name: starrocks-network
