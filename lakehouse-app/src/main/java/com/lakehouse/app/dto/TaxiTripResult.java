@@ -1,4 +1,4 @@
-package com.lakehouse.app.model;
+package com.lakehouse.app.dto;
 
 import lombok.*;
 

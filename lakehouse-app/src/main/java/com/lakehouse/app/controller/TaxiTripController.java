@@ -1,7 +1,7 @@
 package com.lakehouse.app.controller;
 
 
-import com.lakehouse.app.model.TaxiTripResult;
+import com.lakehouse.app.dto.TaxiTripResult;
 import com.lakehouse.app.service.TaxiTripService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +26,7 @@ public class TaxiTripController {
     public List<TaxiTripResult> getTripsPerHourFiltered(
             @RequestParam(required = false) Integer minTrips
     ) {
-        return taxiTripService.getTripsPerHourFiltered(minTrips);
+        return taxiTripService.getTripsPerHourFiltered(minTrips.longValue());
     }
 
     @GetMapping("/average-trips")

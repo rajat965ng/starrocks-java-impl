@@ -10,6 +10,8 @@ A comprehensive Spring Boot application for analyzing NYC Green Taxi trip data u
 - Java 17+
 - Maven
 
+![img_1.png](img_1.png)
+
 ## Data Preparation and Infrastructure Setup
 
 ### 1. Download Dataset
@@ -80,21 +82,25 @@ USE nyc;
 
 ### Application Properties
 ```properties
-# Server Configuration
 server.port=8081
 spring.threads.virtual.enabled=true
 
-# Swagger UI Configuration
 springdoc.swagger-ui.path=/swagger-ui.html
 
-# Database Connection
 spring.datasource.url=jdbc:mysql://127.0.0.1:9030/iceberg.nyc
 spring.datasource.username=root
 spring.datasource.password=
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 
-# Logging Configurations
-logging.level.org.springframework.jdbc.core=DEBUG
+# JPA Configuration
+spring.jpa.hibernate.ddl-auto=none
 spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
+spring.jpa.properties.hibernate.format_sql=true
+
+# Logging configurations
+logging.level.org.hibernate.SQL=DEBUG
+logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE
 ```
 
 ## Key Technical Components
@@ -116,6 +122,8 @@ spring.jpa.show-sql=true
 ### Access Points
 - Swagger UI: `http://localhost:8081/swagger-ui.html`
 - API Endpoints: `http://localhost:8081/api/taxi-trips/`
+
+![img.png](img.png)
 
 ## Dataset Schema
 - 20 columns capturing taxi trip details
